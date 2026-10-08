@@ -1,0 +1,266 @@
+/* Visual details: graph playback, motion cues, and scene actions. */
+.graph-toolbar .graph-flow-toggle {
+  min-width: 94px;
+  height: 30px;
+  padding-inline: 12px;
+}
+.graph-toolbar .graph-flow-toggle.active {
+  background: var(--chrome-active);
+  color: var(--ink);
+}
+.graph-flow-toggle::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  vertical-align: 1px;
+}
+.graph-flow-toggle.active::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.graph-timeline {
+  min-height: 72px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+}
+.graph-timeline .icon-button,
+.graph-timeline > .toolbar-button,
+.gt-speed {
+  height: 32px;
+  flex: none;
+}
+.graph-timeline .icon-button {
+  width: 32px;
+}
+.graph-timeline > .toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.gt-track-wrap {
+  position: relative;
+  min-width: 90px;
+  height: 52px;
+  flex: 1;
+}
+.gt-caption {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 92%, var(--raised));
+  box-shadow: 0 2px 8px rgb(30 22 8 / .08);
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: graph-caption-in .24s ease both;
+}
+.gt-track-wrap input[type="range"] {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+}
+@keyframes graph-caption-in {
+  from { opacity: 0; transform: translateY(4px) scale(.98); }
+}
+.gt-speed {
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 72%, var(--raised));
+}
+.gt-speed button {
+  min-width: 42px;
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: 600 12px/1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.gt-speed button:hover {
+  background: var(--chrome-hover);
+  color: var(--ink);
+}
+.gt-speed button.active {
+  background: var(--primary);
+  color: var(--primary-ink);
+}
+
+.g-node.is-arriving > .g-pop {
+  animation: graph-node-arrive .46s cubic-bezier(.2, .9, .3, 1.15) both;
+  animation-delay: calc(min(var(--i, 0), 20) * 32ms);
+}
+@keyframes graph-node-arrive {
+  from { opacity: 0; transform: scale(.48); }
+  70% { opacity: 1; transform: scale(1.07); }
+  to { opacity: 1; transform: scale(1); }
+}
+.g-node circle.g-speaking-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent) 76%, white);
+  stroke-width: 2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: graph-speaking-pulse 1.65s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes graph-speaking-pulse {
+  0% { opacity: .56; transform: scale(.86); }
+  82%, 100% { opacity: 0; transform: scale(1.18); }
+}
+.rel-starting .rel-path {
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: graph-relation-in .42s cubic-bezier(.2, .8, .25, 1) both;
+}
+.rel-starting .rel-path:nth-of-type(2) {
+  animation-delay: .08s;
+}
+@keyframes graph-relation-in {
+  from { opacity: .2; transform: scale(.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+.rel path.rel-glow {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 6;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  opacity: 0;
+  filter: drop-shadow(0 0 5px currentColor);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: graph-relation-glow .72s ease-out both;
+  pointer-events: none;
+}
+@keyframes graph-relation-glow {
+  0% { opacity: 0; transform: scale(.98); }
+  30% { opacity: .62; }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+.tl-detail .tl-delete-scene,
+.scene-card .scene-delete-action {
+  border-color: color-mix(in srgb, var(--danger) 36%, var(--line));
+  background: transparent;
+  color: var(--danger);
+}
+.tl-detail .tl-delete-scene:hover,
+.scene-card .scene-delete-action:hover {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 8%, var(--raised));
+  color: var(--danger);
+}
+.scene-card.has-scene-delete {
+  padding-bottom: 44px;
+}
+.scene-card.selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.scene-card:focus-visible,
+.tl-card:focus-visible,
+.tl-lane-mark:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.scene-card .scene-delete-action {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(3px);
+  pointer-events: none;
+  transition: opacity .14s ease, transform .14s ease, background-color .14s ease, border-color .14s ease;
+}
+.scene-card:hover .scene-delete-action,
+.scene-card:focus-within .scene-delete-action {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+@media (max-width: 780px) {
+  .graph-timeline {
+    left: 10px;
+    right: 10px;
+    gap: 6px;
+    padding-inline: 6px;
+  }
+  .gt-track-wrap {
+    min-width: 70px;
+  }
+  .gt-speed button {
+    min-width: 32px;
+    padding-inline: 5px;
+  }
+  .graph-timeline > .toolbar-button {
+    padding-inline: 9px;
+  }
+}
+
+/* Scene editor: one aligned header/reference block, then evenly spaced fields. */
+.dialog-backdrop .app-dialog.scene-edit-dialog {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  width: min(480px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding: 24px;
+}
+.scene-edit-intro { display: grid; gap: 10px; margin-bottom: 16px; }
+.scene-edit-header { margin: 0 !important; }
+.scene-edit-title-row { justify-content: space-between; min-height: 36px; }
+.scene-edit-title-row h2 { color: var(--ink); letter-spacing: .03em; }
+.scene-edit-close { border: 1px solid var(--line); border-radius: 9px; }
+.scene-edit-close:hover { border-color: var(--line-strong); }
+.scene-edit-reference { min-height: 44px; }
+.scene-edit-reference .card-number { margin-top: 0; }
+.scene-edit-fields { display: grid; gap: 18px; }
+.scene-edit-field { font: 600 13px/1.3 var(--font-ui); }
+.scene-edit-field input { padding-inline: 11px; }
+.scene-edit-dialog > footer {
+  min-height: 36px;
+  margin-top: 18px !important;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.scene-edit-dialog > footer button { min-height: 36px !important; }
+.scene-edit-dialog > footer .scene-edit-open { justify-content: flex-start; padding-inline: 0; border: 0; background: transparent; color: var(--ink-2); font: 600 13px var(--font-ui); }
+.scene-edit-dialog > footer .scene-edit-open:hover { background: transparent; color: var(--accent-hover); }
+.scene-edit-dialog .scene-edit-actions { gap: 8px; }
+.scene-edit-dialog .scene-edit-cancel { padding-inline: 14px; }
+.scene-edit-dialog .scene-edit-save { min-width: 74px; padding-inline: 16px; }
+
+@media (max-width: 600px) {
+  .dialog-backdrop .app-dialog.scene-edit-dialog { padding: 24px; }
+}

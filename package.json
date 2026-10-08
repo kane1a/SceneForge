@@ -1,0 +1,134 @@
+{
+  "name": "sceneforge",
+  "version": "0.6.27",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4317 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "start": "node server/index.mjs",
+    "build:demo": "vite build --mode demo",
+    "desktop": "npm run build && electron .",
+    "dist:win": "npm run build && electron-builder --win --x64",
+    "dist:mac": "npm run build && electron-builder --mac dmg --arm64 --publish never"
+  },
+  "dependencies": {
+    "fontkit": "^2.0.4",
+    "pdfkit": "^0.20.2"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/courier-prime": "^5.3.0",
+    "@fontsource/noto-serif-tc": "^5.3.0",
+    "@types/d3-force": "^3.0.10",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "d3-force": "^3.0.0",
+    "docx": "^9.8.0",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
+    "mammoth": "^1.13.0",
+    "opencc-js": "^1.4.2",
+    "pdfjs-dist": "^6.3.289",
+    "playwright": "^1.55.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.0.0"
+  },
+  "main": "electron/main.cjs",
+  "description": "SceneForge",
+  "license": "MIT",
+  "homepage": "https://github.com/kane1a/SceneForge",
+  "repository": { "type": "git", "url": "https://github.com/kane1a/SceneForge.git" },
+  "author": "SceneForge",
+  "build": {
+    "appId": "app.sceneforge.desktop",
+    "productName": "SceneForge",
+    "copyright": "Copyright © 2026 kane1a",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**",
+      "server/**",
+      "fonts/**",
+      "electron/**",
+      "src/dialogue-rendering.mjs",
+      "build/icon.png",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "identity": null,
+      "notarize": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "selectPerMachineByDefault": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SceneForge",
+      "include": "build/installer.nsh",
+      "installerLanguages": [
+        "zh_TW"
+      ],
+      "language": "1028",
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "SceneForge-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "SceneForge.exe"
+    },
+    "electronLanguages": [
+      "zh-TW",
+      "zh-CN",
+      "en-US"
+    ],
+    "fileAssociations": [
+      {
+        "ext": "sfe",
+        "name": "SceneForge 劇本",
+        "description": "SceneForge 劇本檔",
+        "role": "Editor"
+      },
+      {
+        "ext": "sceneforge",
+        "name": "SceneForge 劇本（舊版）",
+        "role": "Editor"
+      }
+    ]
+  }
+}

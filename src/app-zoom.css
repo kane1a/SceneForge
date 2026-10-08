@@ -1,0 +1,432 @@
+/* Compact, keyboard-friendly scene editor shared by the timeline and scene board. */
+.scene-edit-backdrop {
+  align-items: center;
+  overflow: auto;
+  padding: 18px;
+}
+.scene-edit-dialog {
+  width: min(480px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  gap: 16px;
+  padding: 24px;
+}
+.scene-edit-dialog > header {
+  margin-bottom: 0;
+}
+.scene-edit-reference {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chrome) 64%, var(--raised));
+}
+.scene-edit-reference .card-number {
+  flex: none;
+  margin: 0;
+}
+.scene-edit-reference strong {
+  min-width: 0;
+  color: var(--ink-2);
+  font: 600 14px/1.55 var(--font-script);
+  overflow-wrap: anywhere;
+}
+.scene-edit-field {
+  display: grid;
+  gap: 7px;
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+.scene-edit-field input,
+.scene-edit-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 14px/1.6 var(--font-ui);
+}
+.scene-edit-field input {
+  height: 36px;
+  padding: 0 11px;
+}
+.scene-edit-field textarea {
+  min-height: 108px;
+  resize: vertical;
+  padding: 9px 11px;
+}
+.scene-edit-field input:focus,
+.scene-edit-field textarea:focus {
+  outline: 2px solid color-mix(in srgb, var(--focus) 56%, transparent);
+  outline-offset: 1px;
+  border-color: var(--focus);
+}
+.scene-edit-dialog > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
+.scene-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scene-edit-dialog > footer button {
+  height: 36px;
+  min-height: 36px;
+  border-radius: 8px;
+}
+.scene-edit-dialog > footer .scene-edit-actions > button { padding-inline: 14px; }
+.scene-edit-dialog > footer > .scene-edit-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-right: auto;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+.scene-edit-dialog > footer > .scene-edit-open:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--chrome-hover);
+  color: var(--ink);
+}
+.scene-edit-header { display: grid; gap: 4px; }
+.scene-edit-header .eyebrow { margin: 0; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .06em; }
+.scene-edit-title-row { display: flex; align-items: center; gap: 12px; }
+.scene-edit-title-row h2 { margin: 0; font: 500 22px/1.3 var(--font-display); }
+.scene-edit-close {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: 20px/1 var(--font-ui);
+}
+.scene-edit-close:hover { background: var(--chrome-hover); color: var(--ink); }
+.scene-edit-open > span:first-child { font-size: 15px; line-height: 1; }
+.scene-edit-open > span:last-child { white-space: nowrap; }
+
+/* Scene-card actions are quiet until intent is clear; danger appears only over the X. */
+.scene-card .card-top {
+  padding-right: 54px;
+}
+.scene-card .card-color {
+  margin-left: 0;
+}
+.scene-card-actions {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  right: 7px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.scene-card-action {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity .14s ease, color .14s ease, background-color .14s ease, border-color .14s ease;
+}
+.scene-card:hover .scene-card-action,
+.scene-card:focus-within .scene-card-action {
+  opacity: 1;
+  pointer-events: auto;
+}
+.scene-card-action:hover,
+.scene-card-action:focus-visible {
+  outline: none;
+  border-color: var(--line);
+  background: var(--chrome-hover);
+  color: var(--ink);
+}
+.scene-card-open svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.scene-card-delete {
+  font: 500 19px/1 var(--font-ui);
+}
+.scene-card-delete:hover,
+.scene-card-delete:focus-visible {
+  border-color: color-mix(in srgb, var(--danger) 25%, transparent);
+  background: color-mix(in srgb, var(--danger) 9%, var(--raised));
+  color: var(--danger);
+}
+@media (hover: none), (pointer: coarse) {
+  .scene-card .scene-card-action {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Whole-app zoom control lives in the persistent status bar. Keep its text and controls on the same 22px status rhythm. */
+.statusbar {
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  line-height: 22px;
+}
+.statusbar .status-left { flex: 1; min-width: 0; }
+.statusbar .status-metrics {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  flex: none;
+  gap: 12px !important;
+  white-space: nowrap;
+}
+.statusbar .status-mode { margin-left: auto; justify-content: flex-end; }
+.statusbar > span,
+.statusbar .status-metrics,
+.statusbar .status-mode {
+  height: 22px;
+  align-items: center;
+  line-height: 22px;
+}
+.statusbar .status-metrics > span,
+.statusbar .status-mode > span {
+  line-height: 22px;
+}
+.statusbar .status-element { line-height: 22px; }
+.statusbar .goal {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  line-height: 22px;
+}
+.statusbar .goal-button {
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px 0 4px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.statusbar .goal-button:hover { background: var(--chrome-hover); color: var(--ink-2); }
+.statusbar .goal-button svg { width: 16px; height: 16px; flex: none; align-self: center; transform: rotate(-90deg); }
+.zoom-status-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0 !important;
+  height: 22px;
+  padding-left: 6px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  line-height: 22px;
+}
+.zoom-control-step,
+.zoom-control-current {
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 20px;
+}
+.zoom-control-step {
+  width: 16px;
+  padding: 0;
+}
+.zoom-control-current {
+  min-width: 34px;
+  padding: 0 3px;
+  border-right: 1px solid var(--line);
+  color: inherit;
+}
+.zoom-control-step:hover:not(:disabled),
+.zoom-control-current:hover { border-radius: 3px; background: color-mix(in srgb, var(--muted) 8%, transparent); color: var(--ink-2); }
+.zoom-control-step:first-child { border-right: 1px solid var(--line); }
+.zoom-control-step:disabled { opacity: .4; cursor: not-allowed; }
+.zoom-popover {
+  position: absolute;
+  z-index: 50;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: min(264px, calc(100vw - 16px));
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-pop);
+  white-space: normal;
+  animation: pop .14s ease-out;
+}
+.zoom-popover .zoom-presets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  padding: 0;
+}
+.zoom-popover .zoom-presets button {
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-2);
+  font: 500 12px/1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+.zoom-popover .zoom-presets button:hover:not(:disabled) { background: var(--chrome-hover); color: var(--ink); }
+.zoom-popover .zoom-presets button[aria-checked="true"] { border-color: var(--primary); background: var(--primary); color: var(--primary-ink); }
+.zoom-popover button:disabled { opacity: .45; cursor: not-allowed; }
+.zoom-custom-form { display: grid; gap: 6px; padding-top: 8px; border-top: 1px solid var(--line); }
+.zoom-custom-form > label { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; color: var(--ink-2); font-size: 12px; font-weight: 600; }
+.zoom-custom-form > label small { color: var(--muted); font-size: 11px; font-weight: 400; }
+.zoom-custom-row { display: flex; align-items: center; gap: 6px; }
+.zoom-custom-row input {
+  width: 88px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 13px var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+.zoom-custom-row input[aria-invalid="true"] { border-color: var(--danger); }
+.zoom-custom-row > span { margin-right: auto; color: var(--muted); font-size: 12px; }
+.zoom-custom-row .button-primary { height: 32px; padding-inline: 12px; }
+.zoom-custom-error,
+.zoom-custom-help { margin: 0; color: var(--danger); font-size: 11px; line-height: 1.45; }
+.zoom-custom-help { color: var(--muted); }
+
+/* Portal context menu: viewport CSS coordinates remain stable under Electron zoom. */
+.script-context-menu {
+  box-sizing: border-box;
+  max-height: min(420px, calc(100vh - 16px));
+  gap: 2px;
+}
+.script-context-menu > .context-caption {
+  min-width: 0;
+  overflow: hidden;
+  padding: 3px 9px 4px;
+  color: var(--muted);
+  font: 500 11.5px/1.45 var(--font-ui);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.script-context-menu > .context-separator {
+  width: 100%;
+  height: 1px;
+  margin: 2px 0 4px;
+  border: 0;
+  background: var(--line);
+}
+.script-context-menu > .context-heading {
+  padding: 3px 9px 5px;
+  color: var(--muted);
+  font: 500 12px/1.45 var(--font-ui);
+}
+.script-context-menu > button {
+  min-height: 36px;
+  padding: 7px 9px;
+  color: var(--ink);
+  font: 400 13.5px/1.45 var(--font-ui);
+}
+.script-context-menu > button:hover:not(:disabled) { background: var(--chrome-hover); }
+.script-context-menu > button:disabled { color: var(--muted); opacity: .65; cursor: not-allowed; }
+.script-context-menu > button.context-back { color: var(--muted); font-size: 12.5px; }
+@media (max-width: 600px) {
+  .scene-edit-backdrop { padding: 10px; }
+  .scene-edit-dialog { max-height: calc(100vh - 20px); padding: 18px 16px 14px; }
+  .zoom-presets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Electron page zoom narrows the CSS viewport even when the maximized window is wide. */
+@media (max-width: 959px) {
+  html, body, #root { min-width: 0; }
+  .topbar { gap: 5px; padding-inline: 8px; }
+  .brand { gap: 4px; flex: none; }
+  .brand-name { display: none; }
+  .brand-logo { width: 24px; height: 24px; }
+  .top-left { gap: 4px; flex: 0 1 auto; }
+  .menu-group { gap: 0; }
+  .menu-trigger { min-width: 0; height: 30px; gap: 0; padding-inline: 4px; font-size: 12.5px; }
+  .menu-trigger .chevron { display: none; }
+  .history-buttons { gap: 0; padding-left: 4px; margin-left: 0; }
+  .history-buttons .icon-button { width: 26px; height: 28px; }
+  .project-heading { max-width: clamp(70px, 14vw, 108px); gap: 3px; }
+  .project-title { min-width: 0; height: 30px; padding-inline: 2px; font-size: 13px; }
+  .workspace-tabs { gap: 0; margin-right: 0; padding: 2px; }
+  .workspace-tabs button { height: 27px; padding-inline: 4px; font-size: 12px; }
+  .save-state { gap: 3px; font-size: 11px; }
+  .save-state .save-label { max-width: 62px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .top-actions { gap: 0; }
+  .icon-group { gap: 0; padding-left: 3px; margin-left: 2px; }
+  .top-actions .icon-button { width: 26px; height: 26px; padding: 4px; }
+  .statusbar { min-width: 0; gap: 6px; padding-inline: 8px; }
+  .status-metrics { min-width: 0; max-width: 55vw; overflow: hidden; gap: 8px !important; white-space: nowrap; }
+  .status-mode { min-width: 0; flex: none; gap: 4px; }
+  .header-menu-popover { max-width: calc(100vw - 16px); max-height: min(78vh, calc(100vh - 16px)); }
+  .header-menu-popover.popover-right { left: auto; right: 0; }
+  .header-menu-popover.submenu { max-height: min(78vh, calc(100vh - 16px)); overflow: auto; }
+  .header-menu-popover.submenu-left { left: auto; right: calc(100% + 6px); transform-origin: top right; }
+  .header-menu-popover.submenu-up { top: auto; bottom: calc(100% + 6px); transform-origin: bottom left; }
+  .header-menu-popover.submenu-left.submenu-up { transform-origin: bottom right; }
+  .dialog-backdrop { padding: 12px; }
+  .dialog-backdrop [role="dialog"] { max-width: calc(100vw - 24px); }
+  .cover-editor {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1fr);
+    gap: 12px;
+    overflow: auto;
+  }
+  .cover-sheet { width: 100%; height: auto; min-height: 0; aspect-ratio: 470 / 608; padding: clamp(16px, 7vw, 70px) clamp(12px, 4vw, 32px) 20px; }
+  .cover-side { min-width: 0; max-height: calc(100vh - 48px); overflow-y: auto; padding: 16px; border-radius: 12px; gap: 9px; }
+}
+

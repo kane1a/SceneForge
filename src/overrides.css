@@ -1,0 +1,284 @@
+/* 最後載入的覆寫層。 */
+
+/* 3. 伏筆與設定：整張卡依狀態上色 */
+.story-view .unified-record-item { --rec-tone: var(--line-strong); border-color: color-mix(in srgb, var(--rec-tone) 34%, var(--line)); background: color-mix(in srgb, var(--rec-tone) 9%, var(--raised)); transition: background-color .18s ease, border-color .18s ease, box-shadow .15s; }
+.story-view .unified-record-item.state-unrecovered { --rec-tone: var(--warn); }
+.story-view .unified-record-item.state-recovered { --rec-tone: var(--ok); }
+.story-view .unified-record-item.state-paused { --rec-tone: var(--muted); }
+.story-view .unified-record-item .record-fields :is(textarea, input) { background: color-mix(in srgb, var(--paper) 88%, var(--raised)); }
+/* 3. 伏筆與設定：摘要與內容間距、刪除移到右下、狀態選項整塊上色 */
+.story-view .unified-record-item[open] > summary { min-height: 40px; padding-top: 6px; padding-bottom: 6px; }
+.story-view .record-unified-fields { gap: 14px; padding: 4px 16px 14px; }
+.story-view .record-unified-fields > .record-content-field { margin-top: 2px; }
+.delete-record { justify-self: end; margin-left: auto; }
+.record-unified-fields > .delete-record { grid-column: 1 / -1; }
+
+
+/* The content label inherits the section-label weight; reset the editor to normal body text. */
+.story-view .record-unified-fields > .record-content-field textarea { font: 400 14px/1.55 var(--font-ui); }
+
+/* 4. 知情表：資訊列快速刪除鈕留在黏性資訊欄內 */
+.matrix .matrix-fact-content { position: relative; min-height: 34px; }
+.matrix .matrix-fact-content textarea { box-sizing: border-box; padding-right: 34px; }
+.matrix .matrix-fact-content > .matrix-del { position: absolute; top: 50%; right: 4px; transform: translateY(-50%); }
+@media (hover: none) { .matrix .matrix-fact-content > .matrix-del { opacity: 1; } }
+
+/* 5. 分場大綱：場次數字膠囊兼做顏色選擇，帶卡片色；選取框改用卡片本身的顏色 */
+.scene-card .card-number.card-number-pick {
+  box-sizing: border-box; width: auto; align-items: center; justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--card) 55%, transparent);
+  border-radius: 8px; background: color-mix(in srgb, var(--card) 20%, var(--raised));
+  color: var(--ink-2); font: 700 11px/1 var(--font-ui); font-variant-numeric: tabular-nums;
+  cursor: pointer; transition: background-color .14s ease, border-color .14s ease;
+}
+.scene-card.color-none .card-number.card-number-pick { border-color: var(--line); background: var(--chrome); }
+.scene-card .card-number.card-number-pick:hover,
+.scene-card .card-number.card-number-pick[aria-expanded="true"] { background: color-mix(in srgb, var(--card) 34%, var(--raised)); border-color: color-mix(in srgb, var(--card) 80%, transparent); }
+.scene-card .card-palette { top: 30px; left: -4px; right: auto; border-radius: 12px; }
+.scene-card .swatch.current { box-shadow: 0 0 0 2px var(--raised), 0 0 0 3.5px var(--ink-2); }
+.scene-card.selected { outline: 0; box-shadow: 0 0 0 2px color-mix(in srgb, var(--card) 70%, var(--ink-2)), 0 8px 20px -12px rgb(30 22 8 / .35); }
+.scene-card.color-none.selected { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ink) 35%, transparent), 0 8px 20px -12px rgb(30 22 8 / .35); }
+
+/* 7. 劇本右鍵選單：伏筆與設定合併 */
+.script-context-menu > button { display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; }
+.script-context-menu .context-more { color: var(--muted); font-size: 15px; line-height: 1; }
+.script-context-menu > .context-subheading { padding: 4px 9px 2px; color: var(--muted); font: 600 11px/1.4 var(--font-ui); }
+.script-context-menu .context-record-title { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.script-context-menu .context-kind { flex: none; padding: 2px 7px; border-radius: 999px; font: 600 10.5px/1.3 var(--font-ui); font-style: normal; background: color-mix(in srgb, var(--accent) 14%, var(--paper)); color: var(--accent-hover); }
+.script-context-menu .context-kind.claim { background: color-mix(in srgb, var(--ok) 14%, var(--paper)); color: var(--ok); }
+.script-context-menu > .context-new { color: var(--accent-hover); font-weight: 600; }
+.script-context-menu > .context-kind-switch { display: grid; grid-template-columns: 1fr 1fr; margin: 2px 0; }
+.script-context-menu > .context-kind-switch > button { width: 100%; }
+.script-context-menu > .context-hint { margin: 2px 4px 0; color: var(--muted); font: 11.5px/1.5 var(--font-ui); }
+
+/* 1. 整體資料備份對話框 */
+.backup-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 16px; }
+.backup-compare > div { display: grid; gap: 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in srgb, var(--paper) 70%, var(--raised)); }
+.backup-compare strong { color: var(--ink); font: 600 13px/1.4 var(--font-ui); }
+.backup-compare span { color: var(--muted); font: 12px/1.6 var(--font-ui); }
+.backup-actions { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.backup-actions > button { height: 36px; min-height: 36px; }
+.backup-list > li { display: flex; align-items: center; gap: 8px; }
+.backup-list > li > div { flex: 1; min-width: 0; }
+.confirm-option { margin: 4px 0 16px; }
+
+/* 8. 版本比對：清單右緣與上方對齊（捲軸放到外側）、文字垂直置中、修訂狀態不貼住清單 */
+.compare-dialog .snapshot-list { scrollbar-gutter: stable; margin-right: -17px; padding-right: 2px; }
+.compare-dialog .snapshot-list::-webkit-scrollbar { width: 10px; }
+.compare-dialog .snapshot-list > li { min-height: 54px; padding: 0 10px 0 14px; }
+.compare-dialog .snapshot-list > li > div { align-content: center; gap: 2px; }
+.compare-dialog .snapshot-list > li strong,
+.compare-dialog .snapshot-list > li small { line-height: 1.35; }
+.compare-dialog .revision-state { margin-top: 14px; }
+
+.story-view .unified-record-item > summary { padding-inline: 16px 14px; }
+.backup-dialog-gap, #backups-title { margin-bottom: 0; }
+section[aria-labelledby="backups-title"] > header { margin-bottom: 16px; }
+
+/* 知情表表頭：名字在欄內真正置中，移除鈕浮在右側不佔位 */
+.matrix th.matrix-person-col { position: relative; }
+.matrix .matrix-col { justify-content: center; }
+.matrix .matrix-col > .matrix-person-column-delete { right: 6px; top: 50%; }
+
+/* 9. 心智圖與人物關係圖工具列：同一種半透明，底下的內容透得出來 */
+.graph-wrap .graph-toolbar { background: color-mix(in srgb, var(--raised) 72%, transparent) !important; backdrop-filter: blur(10px) saturate(1.1); -webkit-backdrop-filter: blur(10px) saturate(1.1); }
+
+/* 11. 人物設定：自訂顏色與角色層級 */
+.avatar-custom-wrap { position: relative; display: inline-flex; }
+.avatar-color-row .avatar-color-custom { box-sizing: border-box; width: 18px; height: 18px; min-width: 18px; display: grid; place-items: center; padding: 0; border: 1px dashed color-mix(in srgb, var(--ink) 30%, transparent); border-radius: 50%; background: var(--raised); color: var(--muted); font: 600 11px/1 var(--font-ui); cursor: pointer; }
+.avatar-color-row .avatar-color-custom.active { border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); box-shadow: 0 0 0 2px var(--raised), 0 0 0 3.5px var(--accent); }
+.avatar-hue-popover { position: absolute; z-index: 30; top: 28px; left: -8px; width: 260px; display: grid; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--raised); box-shadow: var(--shadow-pop); }
+.avatar-hue-preview { display: flex; align-items: center; gap: 10px; }
+.avatar-hue-preview small { color: var(--muted); font: 11.5px/1.5 var(--font-ui); }
+.avatar-hue-track { position: relative; height: 16px; border-radius: 999px; background: linear-gradient(90deg, hsl(0 23% 84%), hsl(60 23% 84%), hsl(120 23% 84%), hsl(180 23% 84%), hsl(240 23% 84%), hsl(300 23% 84%), hsl(359 23% 84%)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 12%, transparent); cursor: pointer; touch-action: none; }
+.avatar-hue-track:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.avatar-hue-knob { position: absolute; top: 50%; width: 20px; height: 20px; transform: translate(-50%, -50%); border: 2px solid var(--raised); border-radius: 50%; box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent), 0 2px 6px rgb(30 22 8 / .2); pointer-events: none; }
+.bible-header-actions { display: flex; align-items: center; gap: 8px; }
+.bible-header-actions > .toolbar-button { height: 32px; }
+
+.bible-card > header > div.bible-header-actions { grid-area: action; margin: 0; min-width: 0; }
+.bible-header-actions > .bible-tier-select { width: 176px; }
+
+/* Logo：透明底場記板，尺寸沿用原本的品牌章 */
+img.brand-logo { display: block; object-fit: contain; padding: 0; border-radius: 0; background: none; box-shadow: none; }
+
+/* 右鍵選單：固定寬度、只能直向捲動；既有紀錄清單自己捲動，選中色塊不再超出 */
+.script-context-menu { width: 260px !important; max-width: calc(100vw - 16px); overflow-x: hidden !important; overflow-y: auto; }
+.script-context-menu > * { min-width: 0; max-width: 100%; }
+.script-context-menu > .context-record-list { display: grid; gap: 2px; max-height: 220px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.script-context-menu .context-record-list > button { box-sizing: border-box; width: 100%; min-width: 0; min-height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 9px; border: 0; border-radius: 8px; background: transparent; color: var(--ink); font: 400 13.5px/1.45 var(--font-ui); text-align: left; cursor: pointer; }
+.script-context-menu .context-record-list > button:hover { background: var(--chrome-hover); }
+.script-context-menu .context-create input { min-width: 0; }
+
+/* 人物關係圖：拖曳時節點不做位移動畫，線才跟得上 */
+.graph-wrap .g-node { transition: opacity 420ms var(--sf-motion); }
+
+/* 分場大綱數字：徽章幾何置中後再把字形墨跡上移，補償字體視覺重心 */
+.scene-card .card-number.card-number-pick { height: 22px; min-width: 26px; padding: 0 7px; line-height: 22px; display: inline-block; text-align: center; font-feature-settings: "tnum" 1, "lnum" 1; }
+.scene-card .card-number-pick .card-number-ink { display: inline-block; transform: translateY(-1.25px); }
+
+/* 文字選取：程式介面文字不可反白，只有使用者輸入與可閱讀的參考內容可選 */
+body { -webkit-user-select: none; user-select: none; }
+input, textarea, [contenteditable="true"], [contenteditable=""], .sf-page-text, .sf-result-text, .compare-list, .script-editor { -webkit-user-select: text; user-select: text; }
+.about-dialog > img.brand-logo.about-logo { width: 40px; height: 40px; }
+/* interaction and alignment fixes */
+.unified-record-item summary > .sf-select.record-status-pill { position:relative; top:-.7px; }
+.unified-record-item summary > .sf-select.record-status-pill .sf-select-value { transform:translateY(.72px); }
+
+
+/* table headers: paint through the 37px report strip and reserved gutter, including its bottom rule. */
+.report-table-wrap {
+  --report-header-height: 37px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  max-height: calc(52vh + 8px);
+  padding-bottom: 8px;
+  background:
+    linear-gradient(var(--line-strong), var(--line-strong)) 0 calc(var(--report-header-height) - 1px) / 100% 1px no-repeat,
+    linear-gradient(to bottom, var(--chrome) 0 var(--report-header-height), var(--raised) var(--report-header-height) 100%);
+}
+.report-table-wrap::before {
+  content: "";
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  left: calc(100% - 9px);
+  box-sizing: border-box;
+  display: block;
+  width: 9px;
+  height: var(--report-header-height);
+  margin: 0 -9px calc(-1 * var(--report-header-height)) auto;
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--chrome);
+  pointer-events: none;
+}
+.report-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.report-table { width: 100%; min-width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+.report-table col:nth-child(1) { width: 7%; }
+.report-table[data-report-tab="scenes"] col:nth-child(1) { width: 7%; }
+.report-table[data-report-tab="scenes"] col:nth-child(2) { width: 8%; }
+.report-table[data-report-tab="scenes"] col:nth-child(3) { width: 23%; }
+.report-table[data-report-tab="scenes"] col:nth-child(4) { width: 9%; }
+.report-table[data-report-tab="scenes"] col:nth-child(5) { width: 13%; }
+.report-table[data-report-tab="scenes"] col:nth-child(6) { width: 40%; }
+.report-table[data-report-tab="characters"] col:nth-child(1) { width: 25%; }
+.report-table[data-report-tab="characters"] col:nth-child(2) { width: 10%; }
+.report-table[data-report-tab="characters"] col:nth-child(3) { width: 11%; }
+.report-table[data-report-tab="characters"] col:nth-child(4) { width: 30%; }
+.report-table[data-report-tab="characters"] col:nth-child(5) { width: 24%; }
+.report-table[data-report-tab="locations"] col:nth-child(1) { width: 31%; }
+.report-table[data-report-tab="locations"] col:nth-child(2) { width: 11%; }
+.report-table[data-report-tab="locations"] col:nth-child(3) { width: 36%; }
+.report-table[data-report-tab="locations"] col:nth-child(4) { width: 22%; }
+.report-table td { word-break: normal; overflow-wrap: break-word; }
+
+/* The matrix keeps its sticky heading strip continuous across the reserved vertical gutter. */
+.matrix-wrap {
+  --matrix-header-height: 48px;
+  position: relative;
+  background:
+    linear-gradient(var(--line-strong), var(--line-strong)) 0 calc(var(--matrix-header-height) - 1px) / 100% 1px no-repeat,
+    linear-gradient(to bottom, var(--chrome) 0 var(--matrix-header-height), var(--raised) var(--matrix-header-height) 100%);
+}
+.matrix-wrap::before {
+  content: "";
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  left: calc(100% - 9px);
+  box-sizing: border-box;
+  display: block;
+  width: 9px;
+  height: var(--matrix-header-height);
+  margin: 0 -9px calc(-1 * var(--matrix-header-height)) auto;
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--chrome);
+  pointer-events: none;
+}
+
+/* Keep the timeline as the only two-axis scroll container; sticky gutters match the scrollport. */
+.map-view > .timeline-view { min-height: 0; overflow: hidden; }
+.map-view > .timeline-view > .tl-scroll {
+  min-height: 0;
+  flex: 1 1 0;
+  overflow: auto;
+  padding: 16px;
+  background: var(--tl-scroll-bg);
+  overscroll-behavior: contain;
+}
+.timeline-view .tl-row-heading { background: transparent; }
+.timeline-view .tl-lanes-label,
+.timeline-view .tl-lane > strong { background: var(--tl-scroll-bg); }
+.timeline-view .tl-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* Simplified/traditional choices remain equally tall after removing supporting subtitles. */
+.convert-dialog .export-templates { align-items: stretch; grid-auto-rows: 1fr; }
+.convert-dialog .export-templates button { min-height: 84px; align-content: center; justify-items: center; text-align: center; }
+
+/* 場次選單：「第 N 場」不可被擠掉；場景標題過長時省略 */
+.sf-select-menu .sf-select-option:has(.sf-select-hint) .sf-select-label { flex: none; overflow: visible; }
+.sf-select-menu .sf-select-option .sf-select-hint { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 唯一例外：伏筆與設定狀態選項整列依狀態上色 */
+.sf-select-menu .sf-select-option[style*="--tone"] { margin: 2px 0; border: 1px solid color-mix(in srgb, var(--tone) 26%, transparent); background: color-mix(in srgb, var(--tone) 14%, var(--paper)); color: color-mix(in srgb, var(--tone) 80%, var(--ink)); }
+.sf-select-menu .sf-select-option[style*="--tone"].active { background: color-mix(in srgb, var(--tone) 24%, var(--paper)); }
+
+/* 時間線：凍結的人名欄往左補滿捲動區內距（16px），標記橫移時不會從人名左側露出。 */
+.timeline-view .tl-lane > strong,
+.timeline-view .tl-lanes-label { box-shadow: -16px 0 0 var(--tl-scroll-bg); }
+
+/* 知情表：輸入框以區塊排版，× 與輸入框、儲存格三者垂直置中一致。 */
+.matrix .matrix-fact-content textarea { display: block; }
+
+/* 知情表：欄頭人名選單與下方每一格選單同寬、左緣右緣都對齊；× 放在欄頭選單右側預留的位置，不重疊。 */
+.matrix thead th.matrix-person-col, .matrix tbody td.matrix-person-col { padding-left: 8px; padding-right: 8px; text-align: left; }
+.matrix td.matrix-cell > .sf-select { display: flex; margin: 0; }
+.matrix .matrix-col { display: flex; align-items: center; gap: 4px; position: static; }
+.matrix .matrix-col > .sf-select,
+.matrix td.matrix-cell > .sf-select { flex: none; width: calc(100% - 26px); max-width: none; min-width: 0; }
+.matrix .matrix-col > .matrix-person-column-delete { position: static; transform: none; flex: 0 0 22px; }
+
+/* 資料存放位置：垃圾桶、整體資料備份、版本快照共用 */
+.storage-location { display: flex; align-items: center; gap: 12px; margin: 0 0 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
+.storage-location-text { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.storage-location-label { color: var(--muted); font: 600 12px/1.4 var(--font-ui); }
+.storage-location-path { overflow: hidden; color: var(--ink); font: 12.5px/1.5 var(--font-ui); text-overflow: ellipsis; white-space: nowrap; }
+.storage-location-note { color: var(--muted); font: 11.5px/1.5 var(--font-ui); }
+.storage-location > .button-small { flex: none; }
+
+/* 垃圾桶列與備份列同一種排列：資訊在左，「還原」在右，「永久刪除」在最右。 */
+.trash-dialog .trash-list > li { flex-direction: row; align-items: center; }
+.trash-dialog .trash-list > li > .trash-actions { display: flex; flex: none; flex-direction: row; align-items: center; gap: 8px; }
+
+/* 整理：進場動畫結束後不再保留合成圖層（畫面相同；避免長劇本每打一字都重組上百個圖層） */
+.editor-scroll, .map-view, .index-view, .act-group .scene-list { animation-fill-mode: backwards; }
+
+/* 效能：劇本捲動區滑入或聚焦時只換自己的捲軸顏色，不讓整份劇本跟著重算樣式（長劇本跳場、點進劇本原本要多花 0.4 秒以上） */
+.editor-scroll > * { scrollbar-color: transparent transparent; }
+
+/* 側欄場次清單：單行省略後不得把清單撐寬（grid 預設最小寬度＝整行文字寬，會出現左右拉桿） */
+.scene-list { grid-template-columns: minmax(0, 1fr); }
+.scene-list > li, .act-group, .act-row { min-width: 0; }
+/* 人物關係膠囊：行高等於內高，中英文字都上下置中；與下方「刪除人物設定」分隔線保持同樣 14px 間距 */
+.bible-relations .rel-chip { line-height: 26px; }
+.bible-relations h4 { line-height: 28px; }
+.bible-relations + .bible-card-actions { margin-top: 14px; }
+/* 切到故事／圖譜時，藏起來的劇本完全不參與排版與繪製（保留狀態與捲動位置，切換不卡） */
+.script-workspace[hidden] { content-visibility: hidden; }
+
+/* script format can be switched from the 格式 menu */
+.format-fixed > .format-preset-switch { display: grid; grid-template-columns: 1fr 1fr; margin: 4px 0 2px; }
+.format-fixed > .format-preset-switch > button { width: 100%; }
+.format-fixed > small { color: var(--muted); font-size: 12px; }
+
+/* 關於 › 第三方授權：清單在框內捲動，長行自動換行 */
+.licenses-dialog .demo-output { max-height: min(56vh, 560px); font: 11px/1.55 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* 人物關係圖 › 關係清單：人名一欄（同寬、單行，寬度依清單中最長的名字），說明一欄（靠左換行），「第 N 場起」另起一行 */
+.gp-relations li:not(.gp-muted) { display: grid; grid-template-columns: 9px var(--gp-name-col, 3em) minmax(0, 1fr) 24px; align-items: center; column-gap: 10px; min-height: 36px; padding: 8px 6px 8px 10px; }
+.gp-relations .gp-relation-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gp-relations .gp-relation-text { display: grid; gap: 2px; min-width: 0; text-align: left; }
+.gp-relations .gp-relation-text em { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; font-style: normal; overflow-wrap: anywhere; }
+.gp-relations .gp-relation-text small { color: var(--muted); font: 11.5px/1.3 var(--font-ui); opacity: .8; }

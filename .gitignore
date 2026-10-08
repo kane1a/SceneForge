@@ -1,0 +1,11 @@
+# Dependencies and build output
+node_modules/
+dist/
+dist-demo/
+release/
+
+# Local data and logs
+data/
+*.log
+.env
+.env.*

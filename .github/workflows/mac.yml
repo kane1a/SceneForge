@@ -1,0 +1,48 @@
+name: Mac 版打包
+
+# 手動觸發：在 Actions 頁面選「Mac 版打包」，輸入要補上 Mac 版的版本標籤（例如 v0.6.27）。
+# 只建 Apple Silicon（arm64）DMG，未經 Apple 簽章，以 ad-hoc 簽章讓 M 系列晶片可以執行。
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 版本標籤（例如 v0.6.27）
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  mac:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: 安裝相依套件
+        run: npm ci
+
+      - name: 建置
+        run: npm run build
+
+      - name: 打包 DMG
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npx electron-builder --mac dmg --arm64 --publish never -c.mac.identity=- -c.mac.hardenedRuntime=false -c.mac.artifactName='SceneForge-${version}-mac-arm64.${ext}'
+
+      - name: 檢查簽章
+        run: |
+          APP=$(find release -maxdepth 3 -name "SceneForge.app" | head -1)
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          ls -la release/*.dmg
+
+      - name: 上傳到 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ inputs.tag }}" release/*.dmg --clobber

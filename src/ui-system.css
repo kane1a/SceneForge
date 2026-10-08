@@ -1,0 +1,672 @@
+/* SceneForge shared interaction and identity layer */
+:root {
+  --sf-segment-track: color-mix(in srgb, var(--ink) 5%, transparent);
+  --sf-segment-paper: var(--paper);
+  --sf-segment-hairline: color-mix(in srgb, var(--ink) 12%, transparent);
+  --sf-segment-shadow: 0 1px 2px rgb(30 22 8 / .09), 0 0 0 .5px color-mix(in srgb, var(--ink) 8%, transparent);
+  --sf-motion: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* One warm track and one paper thumb for tabs, filters, radios and mode switches. */
+:is([data-seg], [data-segmented], [role="tablist"], [role="radiogroup"], [role="group"], .record-filters, .gt-speed, .gp-types, .bible-tabs, .report-tabs, .story-tabs, .template-chips, .seg-chips, .kind-row) {
+  position: relative;
+  isolation: isolate;
+}
+:is([data-seg], [data-segmented], [role="tablist"], [role="radiogroup"], [role="group"], .record-filters, .gt-speed, .gp-types, .bible-tabs, .report-tabs, .story-tabs, .template-chips, .seg-chips, .kind-row):not(.studio-target) {
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sf-segment-track);
+}
+.seg-thumb {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--sf-segment-hairline);
+  border-radius: 999px;
+  background: var(--sf-segment-paper);
+  box-shadow: var(--sf-segment-shadow);
+  pointer-events: none;
+  will-change: transform, width, height;
+  transition: transform 260ms var(--sf-motion), width 260ms var(--sf-motion), height 260ms var(--sf-motion), opacity 180ms ease;
+}
+:is(.workspace-tabs, .story-tabs, .map-tabs, .mm-levels, .report-tabs, .bible-tabs) > .seg-thumb {
+  border: 1px solid var(--sf-segment-hairline);
+  background: var(--sf-segment-paper);
+  box-shadow: var(--sf-segment-shadow);
+  color: var(--ink);
+}
+:is([data-seg], [data-segmented], [role="tablist"], [role="radiogroup"], [role="group"], .record-filters, .gt-speed, .gp-types, .bible-tabs, .report-tabs, .story-tabs, .template-chips, .seg-chips, .kind-row):not(.studio-target) > button {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  min-height: 32px;
+  height: 32px;
+  min-width: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+  font: 600 13px/1 var(--font-ui);
+  text-align: center;
+  white-space: nowrap;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+:is([data-seg], [data-segmented], [role="tablist"], [role="radiogroup"], [role="group"], .record-filters, .gt-speed, .gp-types, .bible-tabs, .report-tabs, .story-tabs, .template-chips, .seg-chips, .kind-row):not(.studio-target) > button:is(.active, [aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]) {
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
+}
+:is([data-seg], [data-segmented], [role="tablist"], [role="radiogroup"], [role="group"], .record-filters, .gt-speed, .gp-types, .bible-tabs, .report-tabs, .story-tabs, .template-chips, .seg-chips, .kind-row) > button:hover:not(:disabled) {
+  color: var(--ink);
+}
+:is([data-seg], [data-segmented], [role="tablist"], [role="radiogroup"], [role="group"], .record-filters, .gt-speed, .gp-types, .bible-tabs, .report-tabs, .story-tabs, .template-chips, .seg-chips, .kind-row) > button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Two-up format/target cards keep their dimensions; the same paper thumb marks selection. */
+.studio-target {
+  position: relative;
+  isolation: isolate;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.studio-target > button {
+  position: relative;
+  z-index: 1;
+  border-color: transparent;
+  background: transparent;
+  transition: color 180ms ease;
+}
+.studio-target > button.active {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink);
+}
+.studio-target > .seg-thumb { border-radius: 12px; }
+
+/* Keep the shared tab strips clear of every panel, including the reference-library page. */
+.map-view > .map-tabs,
+.story-view > .story-workspace-tabs {
+  position: absolute;
+  z-index: 8;
+  top: 14px;
+  left: 20px;
+  max-width: calc(100% - 40px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.map-view > .map-tabs::-webkit-scrollbar,
+.story-view > .story-workspace-tabs::-webkit-scrollbar { display: none; }
+.story-view > .index-view {
+  box-sizing: border-box;
+  padding: 68px 20px 20px;
+}
+.story-view > .graph-empty { padding-top: 70px; }
+.mm-wrap .graph-toolbar {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.mm-wrap .graph-toolbar::-webkit-scrollbar { display: none; }
+.graph-toolbar > .toolbar-button,
+.graph-toolbar > .graph-switch {
+  min-height: 32px;
+  height: 32px;
+}
+.graph-toolbar > .toolbar-button { border-radius: 999px; }
+.graph-toolbar > .toolbar-button:disabled {
+  opacity: .42;
+  color: var(--muted);
+  cursor: not-allowed;
+}
+.mm-levels { gap: 2px; padding: 3px; display: inline-flex; align-items: center; }
+.mm-levels > span { position: relative; z-index: 1; margin-right: 3px; color: var(--muted); font-size: 12px; }
+.mm-levels > button { min-width: 34px; padding-inline: 9px; }
+.gt-speed { gap: 2px; display: inline-flex; align-items: center; }
+.gt-speed > button { min-width: 40px; padding-inline: 10px; font-variant-numeric: tabular-nums; }
+.gp-types { gap: 4px; position: relative; }
+.gp-types > .rel-chip { border: 0; }
+.gp-types > .rel-chip.active { color: var(--ink) !important; }
+.record-filters { display: inline-flex; align-items: center; gap: 2px; margin: 4px 0 12px; }
+.seg-chips { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 2px; }
+.report-tabs { display: inline-flex; align-items: center; gap: 2px; }
+.story-workspace-tabs { width: max-content; }
+
+/* Selected standalone toggles use the same paper/ink treatment; only true groups get a sliding thumb. */
+.graph-toolbar > .toolbar-button.active,
+.graph-timeline > .toolbar-button.active,
+.tl-header > .toolbar-button.active {
+  border: 1px solid var(--sf-segment-hairline);
+  background: var(--sf-segment-paper);
+  box-shadow: var(--sf-segment-shadow);
+  color: var(--ink);
+}
+
+/* A new panel crossfades and lifts only 6px; no scale pop during tab changes. */
+@keyframes sf-panel-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.map-view > .graph-wrap,
+.map-view > .timeline-view,
+.map-view > .graph-empty,
+.story-view > .bible-view,
+.story-view > .story-record-section,
+.story-view > .matrix-view,
+.story-view > .board,
+.story-view > .index-view {
+  animation: sf-panel-enter 200ms var(--sf-motion) both;
+}
+
+/* Refined actions use the accessible brass primary and a quiet outlined secondary. */
+.button-primary,
+.button-ghost {
+  border-radius: 9px;
+  transition: transform 160ms var(--sf-motion), color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.button-primary {
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line-strong));
+  background: var(--primary);
+  color: var(--primary-ink);
+  box-shadow: 0 1px 2px rgb(30 22 8 / .12);
+}
+.button-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--primary-hover);
+  background: var(--primary-hover);
+  box-shadow: 0 3px 8px rgb(30 22 8 / .13);
+}
+.button-ghost {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--paper) 62%, transparent);
+  color: var(--ink-2);
+}
+.button-ghost:hover:not(:disabled) {
+  border-color: var(--line-strong);
+  background: var(--chrome-hover);
+  color: var(--ink);
+}
+.button-primary.button-small,
+.button-ghost.button-small { min-height: 32px; height: 32px; border-radius: 8px; }
+.quick-add-form input,
+.quick-add-form button { min-height: 38px; height: 38px; border-radius: 9px; }
+
+/* Character marks share one quiet, name-hashed hue across rails, profiles and pickers. */
+.gp-avatar,
+.cast-avatar,
+.pick-avatar,
+.card-cast-avatar {
+  background: hsl(var(--avatar-hue, 35) 23% 84%);
+  color: hsl(var(--avatar-hue, 35) 28% 25%);
+  background-image: none;
+  line-height: 1;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent), 0 1px 2px rgb(30 22 8 / .05);
+}
+
+/* Graph playback: stable keyed nodes, one first-appearance fade/scale per playback run. */
+.graph-wrap .g-node {
+  will-change: transform, opacity;
+}
+.graph-wrap .rel,
+.graph-wrap .co-link {
+  transition: opacity 420ms var(--sf-motion), stroke-width 320ms var(--sf-motion);
+}
+.graph-wrap .g-node .g-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: none;
+}
+.graph-wrap .g-node.is-arriving > .g-pop {
+  animation: sf-node-arrive 360ms var(--sf-motion) both;
+  animation-delay: calc(min(var(--i, 0), 10) * 14ms);
+}
+@keyframes sf-node-arrive {
+  from { opacity: 0; transform: scale(.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+.graph-wrap .g-node .g-avatar-core {
+  stroke: color-mix(in srgb, var(--ink) 16%, transparent);
+  stroke-width: 1;
+}
+.graph-wrap .g-node .g-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 23%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: none;
+  pointer-events: none;
+}
+.graph-wrap .g-node.lead .g-ring { stroke: color-mix(in srgb, var(--ink) 23%, transparent); }
+.graph-wrap .g-node .g-initial {
+  fill: var(--ink);
+  font-family: var(--font-ui);
+  font-weight: 600;
+}
+.graph-wrap .g-node .g-halo { animation: none; opacity: .5; }
+.graph-wrap .g-node circle.g-speaking-ring {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent) 62%, var(--ink));
+  stroke-width: 1.8;
+  opacity: 0;
+  transform: none;
+  animation: none;
+  transition: opacity 400ms var(--sf-motion);
+  pointer-events: none;
+}
+.graph-wrap .g-node circle.g-speaking-ring.is-speaking { opacity: .78; }
+.graph-wrap .rel .rel-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: none;
+}
+.graph-wrap .rel.rel-entering .rel-path {
+  animation: sf-relation-draw 420ms var(--sf-motion) both;
+}
+.graph-wrap .rel.rel-entering .rel-path:nth-of-type(2) { animation-delay: 36ms; }
+@keyframes sf-relation-draw {
+  from { stroke-dashoffset: 1; opacity: .3; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+.graph-wrap .rel path.rel-glow {
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  animation: sf-relation-glow 430ms ease-out both;
+}
+@keyframes sf-relation-glow {
+  0% { opacity: 0; }
+  32% { opacity: .36; }
+  100% { opacity: 0; }
+}
+.graph-wrap .co-link { animation: none; }
+.graph-wrap .gt-caption { animation: sf-caption-in 200ms var(--sf-motion) both; }
+@keyframes sf-caption-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Timeline lanes now read as two ordered sections with a deliberate breathing interval. */
+.tl-rows > .tl-row-label:first-child { padding: 4px 0 8px; }
+.tl-row.tl-card-row + .tl-row-label {
+  margin-top: 12px;
+  padding: 10px 0 8px;
+  border-top: 1px solid var(--line);
+}
+
+/* Rail counts refer to direct child topics, not an unexplained number. */
+.rail-nav-list[aria-label="心智圖分支"] > button > small {
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+.rail-nav-list[aria-label="心智圖分支"] > button > small::after {
+  content: " 子題";
+  color: var(--muted);
+  font-size: 10.5px;
+}
+.mm-badge, .mm-fold { cursor: pointer; }
+.mm-badge:focus-visible rect,
+.mm-fold:focus-visible circle { stroke: var(--focus); stroke-width: 2.5; }
+.mm-node:focus-within .mm-fold { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .seg-thumb { transition: none; }
+  .map-view,
+  .story-view { animation: none; }
+  .map-view > .graph-wrap,
+  .map-view > .timeline-view,
+  .map-view > .graph-empty,
+  .story-view > .bible-view,
+  .story-view > .story-record-section,
+  .story-view > .matrix-view,
+  .story-view > .board,
+  .story-view > .index-view { animation: none; }
+  .graph-wrap .g-node .g-pop,
+  .graph-wrap .g-node.is-arriving > .g-pop,
+  .graph-wrap .rel .rel-path,
+  .graph-wrap .rel.rel-entering .rel-path,
+  .graph-wrap .rel path.rel-glow { animation: none; }
+  .graph-wrap .g-node,
+  .graph-wrap .rel,
+  .graph-wrap .co-link,
+  .graph-wrap .g-node circle.g-speaking-ring { transition: none; }
+}
+
+
+/* ---- 單顆切換鈕、時間線、來源側欄 ---- */
+/* 單顆開關型按鈕（連線流動、顯示統計、依人物分列）：與分段滑塊同一套選取語彙 */
+.toolbar-button[aria-pressed] { position: relative; height: 32px; padding: 0 12px 0 28px; border: 1px solid transparent; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 600; transition: color .22s cubic-bezier(.2,.7,.2,1), background-color .22s cubic-bezier(.2,.7,.2,1), border-color .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s cubic-bezier(.2,.7,.2,1); }
+.toolbar-button[aria-pressed]::before { content: ""; position: absolute; left: 12px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; border: 1.5px solid currentColor; opacity: .55; transition: background-color .22s, opacity .22s, transform .22s cubic-bezier(.2,.7,.2,1); }
+.toolbar-button[aria-pressed="true"], .toolbar-button[aria-pressed].active { background: var(--paper, #fffdf8); border-color: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--ink); box-shadow: 0 1px 2px rgb(22 20 15 / .08), 0 2px 8px rgb(22 20 15 / .05); }
+.toolbar-button[aria-pressed="true"]::before, .toolbar-button[aria-pressed].active::before { background: var(--accent, #9b7a3a); border-color: var(--accent, #9b7a3a); opacity: 1; transform: scale(1.05); }
+.tl-header .tl-lane-toggle.active { background: var(--paper, #fffdf8); border-color: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--ink); }
+/* 開關（同場連線）動畫與配色統一 */
+.graph-switch span { transition: background-color .26s cubic-bezier(.2,.7,.2,1); }
+.graph-switch span::after { transition: transform .26s cubic-bezier(.2,.7,.2,1); }
+.graph-switch input:checked + span { background: var(--accent, #9b7a3a); }
+
+/* 時間線：兩排之間拉開、排名稱有層級 */
+.tl-row-label { margin: 0 0 12px; color: var(--ink); font: 600 14px/1.3 var(--font-ui); letter-spacing: .02em; }
+.tl-row-label ~ .tl-row-label { margin-top: 44px; padding-top: 28px; border-top: 1px solid var(--line); }
+
+/* 參考資料：來源側欄 */
+.sf-panel-title { margin: 4px 0 10px; color: var(--muted); font: 600 12px/1.2 var(--font-ui); letter-spacing: .06em; }
+.sf-import { display: grid; gap: 6px; margin-bottom: 18px; }
+.sf-import-button { position: relative; display: flex; align-items: center; justify-content: center; height: 36px; border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); border-radius: 10px; background: var(--paper, #fffdf8); color: var(--ink); font: 600 13px/1 var(--font-ui); cursor: pointer; box-shadow: 0 1px 2px rgb(22 20 15 / .05); transition: border-color .2s, box-shadow .2s, transform .2s cubic-bezier(.2,.7,.2,1); }
+.sf-import-button:hover { border-color: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: 0 2px 8px rgb(22 20 15 / .08); }
+.sf-import-button:active { transform: translateY(1px); }
+.sf-import-button .sf-file { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.sf-format-list, .sf-import-helper { display: block; padding: 0 2px; color: var(--muted); font: 400 11.5px/1.5 var(--font-ui); overflow-wrap: anywhere; }
+.sf-count { margin: 0 2px 6px; color: var(--muted); font: 600 11px/1.2 var(--font-ui); letter-spacing: .06em; }
+
+.sf-doc-list .sf-doc.active { background: var(--paper, #fffdf8); border-color: color-mix(in srgb, var(--ink) 12%, transparent); box-shadow: 0 1px 2px rgb(22 20 15 / .06); }
+
+.mm-levels-label { margin: 0 2px 0 4px; color: var(--muted); font: 600 12px/1 var(--font-ui); }
+.mm-levels > span { display: none; }
+.sf-format-list, .sf-import-helper { white-space: normal; }
+.sf-doc-list, .sf-doc-list > li { width: 100%; list-style: none; margin: 0; padding: 0; }
+.sf-doc-list .sf-doc { width: 100%; box-sizing: border-box; }
+
+/* ---- graph/mindmap ---- */
+/* Relation disclosures share one compact header and a reduced-motion-safe reveal. */
+.graph-panel .gp-disclosure {
+  margin-top: 14px;
+}
+.graph-panel .gp-disclosure-trigger {
+  width: 100%;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 3px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-2);
+  font: 600 13px/1.2 var(--font-ui);
+  text-align: left;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.graph-panel .gp-disclosure-trigger:hover { color: var(--ink); }
+.graph-panel .gp-disclosure-trigger:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.gp-disclosure-title { min-width: 0; }
+.gp-disclosure-badge {
+  margin-left: auto;
+  color: var(--muted);
+  font: 500 12px/1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+.gp-disclosure-chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 200ms var(--sf-motion);
+}
+.gp-disclosure.is-open > .gp-disclosure-trigger .gp-disclosure-chevron { transform: rotate(180deg); }
+.graph-panel .gp-disclosure-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  opacity: 0;
+  transition: grid-template-rows 200ms var(--sf-motion), opacity 200ms ease, visibility 0s linear 200ms;
+  visibility: hidden;
+}
+.gp-disclosure.is-open > .gp-disclosure-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.gp-disclosure-inner { min-height: 0; overflow: hidden; }
+.gp-scenes { margin-top: 16px !important; }
+.gp-scenes .gp-disclosure-inner { display: block; }
+.gp-scene-list { display: flex; flex-wrap: wrap; gap: 5px; padding: 9px 0 2px; }
+.gp-form-disclosure { margin-top: 14px !important; }
+.graph-panel .gp-form-disclosure .gp-form { margin: 8px 0 0; }
+
+/* These are independent relation-color choices, not a segmented selector. */
+.gp-types[data-seg-ignore] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 6px;
+  position: static;
+  isolation: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.gp-types[data-seg-ignore] > .seg-thumb { display: none; }
+.gp-types[data-seg-ignore] .rel-family { --gp-chip-color: var(--rel-family); }
+.gp-types[data-seg-ignore] .rel-love { --gp-chip-color: var(--rel-love); }
+.gp-types[data-seg-ignore] .rel-friend { --gp-chip-color: var(--rel-friend); }
+.gp-types[data-seg-ignore] .rel-ally { --gp-chip-color: var(--rel-ally); }
+.gp-types[data-seg-ignore] .rel-mentor { --gp-chip-color: var(--rel-mentor); }
+.gp-types[data-seg-ignore] .rel-work { --gp-chip-color: var(--rel-work); }
+.gp-types[data-seg-ignore] .rel-rival { --gp-chip-color: var(--rel-rival); }
+.gp-types[data-seg-ignore] .rel-enemy { --gp-chip-color: var(--rel-enemy); }
+.gp-types[data-seg-ignore] .rel-other { --gp-chip-color: var(--rel-other); }
+.gp-types[data-seg-ignore] > .rel-chip {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 7px;
+  border: 1px solid color-mix(in srgb, var(--gp-chip-color) 34%, var(--line));
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink-2);
+  box-shadow: none;
+  font: 600 12px/1 var(--font-ui);
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+.gp-types[data-seg-ignore] > .rel-chip:hover:not(:disabled) {
+  border-color: var(--gp-chip-color);
+  background: color-mix(in srgb, var(--gp-chip-color) 7%, var(--paper));
+  color: var(--ink);
+}
+.gp-types[data-seg-ignore] > .rel-chip.active {
+  border-color: var(--gp-chip-color);
+  background: color-mix(in srgb, var(--gp-chip-color) 15%, var(--raised));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gp-chip-color) 12%, transparent);
+  color: var(--ink) !important;
+}
+.gp-chip-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--gp-chip-color);
+}
+
+/* Graph and mind-map controls use the same 32px / 8px geometry. */
+.graph-wrap .graph-toolbar {
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+}
+.graph-wrap .graph-toolbar > .toolbar-button,
+.graph-wrap .graph-toolbar > .graph-switch {
+  box-sizing: border-box;
+  min-height: 32px;
+  height: 32px;
+}
+.graph-wrap .graph-toolbar > .toolbar-button {
+  padding-inline: 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
+}
+.graph-wrap .graph-toolbar > .toolbar-button[aria-pressed] { padding-left: 28px; }
+.graph-wrap .graph-toolbar button:disabled {
+  opacity: .42;
+  color: var(--muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.graph-wrap .graph-toolbar button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.mm-wrap .graph-toolbar {
+  left: 20px;
+  right: auto;
+  width: max-content;
+  max-width: calc(100% - 40px);
+  justify-content: flex-start;
+}
+.mm-wrap .graph-toolbar .mm-crumbs {
+  position: static;
+  z-index: auto;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+  width: max-content;
+  max-width: min(36vw, 340px);
+  overflow-x: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  font-size: 12.5px;
+  scrollbar-width: none;
+}
+.mm-wrap .graph-toolbar .mm-crumbs::-webkit-scrollbar { display: none; }
+.mm-wrap .graph-toolbar .mm-crumbs span { flex: 0 0 auto; }
+.mm-wrap .graph-toolbar .mm-crumbs i { color: var(--faint); }
+.mm-wrap .graph-toolbar .mm-crumbs button {
+  max-width: 130px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--muted);
+  font: 600 12.5px/1 var(--font-ui);
+  transition: color 180ms ease, background-color 180ms ease;
+}
+.mm-wrap .graph-toolbar .mm-crumbs button:hover { background: var(--chrome-hover); color: var(--ink); }
+.mm-wrap .graph-toolbar .mm-crumbs button.here { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .gp-disclosure-panel,
+  .gp-disclosure-chevron,
+  .graph-panel .gp-disclosure-trigger,
+  .gp-types[data-seg-ignore] > .rel-chip,
+  .mm-wrap .graph-toolbar .mm-crumbs button { transition: none !important; }
+}
+
+/* Compact action clusters are not chips; use the same restrained corner radius as buttons. */
+.mm-zoom { border-radius: 10px; }
+.graph-timeline { border-radius: 14px; }
+.graph-timeline .toolbar-button { border-radius: 8px; }
+
+/* Keep rails and side panels the same width whether or not their lists overflow. */
+:where(.project-list-section, .outline-section, .workspace-rail-section, .reference-library-rail,
+  .inspector-content, .story-inspector, .graph-panel, .mm-inspector, .mm-outline, .studio-side,
+  .story-record-section, .timeline-view, .matrix-view, .bible-view, .index-view, .board,
+  .tl-scroll, .matrix-wrap, .location-list, .compare-list, .backup-list, .candidate-list,
+  .report-table-wrap, .preview-block-list, .import-warnings ul, .app-dialog, .header-menu-popover,
+  .pick-list, .script-context-menu, .editor-scroll, .studio-page, .board-cards, .project-list,
+  .scene-list, .bible-list, .gp-scene-list, .sf-analyzer-rail-mode, .sf-library, .sf-doc-list, .sf-results, .sf-page-text) {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+:where(.project-list-section, .outline-section, .workspace-rail-section, .reference-library-rail,
+  .inspector-content, .story-inspector, .graph-panel, .mm-inspector, .mm-outline, .studio-side,
+  .story-record-section, .timeline-view, .matrix-view, .bible-view, .index-view, .board,
+  .tl-scroll, .matrix-wrap, .location-list, .compare-list, .backup-list, .candidate-list,
+  .report-table-wrap, .preview-block-list, .import-warnings ul, .app-dialog, .header-menu-popover,
+  .pick-list, .script-context-menu, .editor-scroll, .studio-page, .board-cards, .project-list,
+  .scene-list, .bible-list, .gp-scene-list, .sf-analyzer-rail-mode, .sf-library, .sf-doc-list, .sf-results, .sf-page-text):is(:hover, :focus-within) {
+  scrollbar-color: color-mix(in srgb, var(--muted) 55%, transparent) transparent;
+}
+:where(.project-list-section, .outline-section, .workspace-rail-section, .reference-library-rail,
+  .inspector-content, .story-inspector, .graph-panel, .mm-inspector, .mm-outline, .studio-side,
+  .story-record-section, .timeline-view, .matrix-view, .bible-view, .index-view, .board,
+  .tl-scroll, .matrix-wrap, .location-list, .compare-list, .backup-list, .candidate-list,
+  .report-table-wrap, .preview-block-list, .import-warnings ul, .app-dialog, .header-menu-popover,
+  .pick-list, .script-context-menu, .editor-scroll, .studio-page, .board-cards, .project-list,
+  .scene-list, .bible-list, .gp-scene-list, .sf-analyzer-rail-mode, .sf-library, .sf-doc-list, .sf-results, .sf-page-text)::-webkit-scrollbar { width: 9px; height: 9px; }
+:where(.project-list-section, .outline-section, .workspace-rail-section, .reference-library-rail,
+  .inspector-content, .story-inspector, .graph-panel, .mm-inspector, .mm-outline, .studio-side,
+  .story-record-section, .timeline-view, .matrix-view, .bible-view, .index-view, .board,
+  .tl-scroll, .matrix-wrap, .location-list, .compare-list, .backup-list, .candidate-list,
+  .report-table-wrap, .preview-block-list, .import-warnings ul, .app-dialog, .header-menu-popover,
+  .pick-list, .script-context-menu, .editor-scroll, .studio-page, .board-cards, .project-list,
+  .scene-list, .bible-list, .gp-scene-list, .sf-analyzer-rail-mode, .sf-library, .sf-doc-list, .sf-results, .sf-page-text)::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  background-clip: content-box;
+}
+:where(.project-list-section, .outline-section, .workspace-rail-section, .reference-library-rail,
+  .inspector-content, .story-inspector, .graph-panel, .mm-inspector, .mm-outline, .studio-side,
+  .story-record-section, .timeline-view, .matrix-view, .bible-view, .index-view, .board,
+  .tl-scroll, .matrix-wrap, .location-list, .compare-list, .backup-list, .candidate-list,
+  .report-table-wrap, .preview-block-list, .import-warnings ul, .app-dialog, .header-menu-popover,
+  .pick-list, .script-context-menu, .editor-scroll, .studio-page, .board-cards, .project-list,
+  .scene-list, .bible-list, .gp-scene-list, .sf-analyzer-rail-mode, .sf-library, .sf-doc-list, .sf-results, .sf-page-text):is(:hover, :focus-within)::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+  background-clip: content-box;
+}
+
+/* 伏筆與設定摘要狀態標籤不拉長 */
+.record-summary-text { flex: 1 1 auto; min-width: 0; }
+details > summary .record-meta { flex: 0 0 auto; width: auto; margin-left: auto; padding: 2px 10px; border-radius: 8px; font-size: 12px; line-height: 18px; }
+
+.welcome > p { max-width: 36em; text-wrap: balance; }
+
+/* 知情表固定欄寬（新增人物不重排、表頭底色延伸到最右） */
+.matrix-wrap { overflow:auto; scrollbar-gutter:stable; }
+.matrix { width:max-content; min-width:100%; table-layout:fixed; border-collapse:separate; border-spacing:0; }
+.matrix .matrix-fact { width:300px; min-width:300px; max-width:300px; position:sticky; left:0; z-index:2; background:var(--raised); text-align:left; padding-left:14px; }
+.matrix th.matrix-fact { z-index:3; background:var(--chrome); }
+.matrix .matrix-person-col { width:132px; min-width:132px; max-width:132px; }
+.matrix .matrix-plus { width:56px; min-width:56px; }
+.matrix th:last-child,.matrix td:last-child { width:auto; min-width:56px; }
+.matrix th { height:48px; padding:0 10px; vertical-align:middle; }
+.matrix td { height:52px; padding:0 10px; }
+.matrix-col { display:inline-flex; align-items:center; justify-content:center; gap:4px; max-width:100%; }
+.matrix-cell select { width:100px; }
+.matrix-empty { height:64px; color:var(--muted); }
+
+/* story dropdowns use shared Select; keep controls inside fixed-width matrix cells. */
+.unified-record-item summary > .sf-select.record-status-pill { box-sizing:border-box; width:84px; min-width:84px; flex:0 0 84px; margin-left:auto; }
+.record-unified-fields > label > .sf-select,
+.record-unified-fields .record-fields .sf-select { width:100%; }
+.matrix-at > .matrix-at-select { min-width:122px; }
+.matrix .matrix-cell > .sf-select { width:100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-color-auto,.avatar-color-swatch { transition:none; }
+}
+
+/* knowledge headers keep avatar, label, chevron and removal in one fixed cell. */
+.matrix .matrix-col > .matrix-person-column-delete { opacity: .65; }
+.matrix th.matrix-person-col,.matrix td.matrix-person-col { width:132px; min-width:132px; max-width:132px; }
+.matrix th.matrix-plus,.matrix td.matrix-plus-cell { width:56px; min-width:56px; max-width:56px; }
+.matrix thead,.matrix thead tr,.matrix th { background:var(--chrome); }

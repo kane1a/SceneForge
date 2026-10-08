@@ -1,0 +1,15 @@
+name: 功能建議
+description: 想要的新功能或改進
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: 你想做什麼？
+      description: 描述寫作時遇到的情境
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: 希望怎麼運作

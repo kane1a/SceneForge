@@ -1,0 +1,35 @@
+name: 回報錯誤
+description: 程式出錯、畫面異常或資料問題
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: 版本
+      description: 程式左上角圖示 › 關於
+      placeholder: 0.6.27
+    validations:
+      required: true
+  - type: dropdown
+    id: build
+    attributes:
+      label: 使用的版本
+      options: [Windows 安裝版, Windows 免安裝版, macOS, 從原始碼執行]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重現步驟
+      placeholder: "1. 開啟劇本\n2. 點選…\n3. 看到…"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 預期結果與實際結果
+  - type: textarea
+    id: media
+    attributes:
+      label: 截圖
+      description: 可直接貼上圖片；請勿上傳未公開的劇本內容

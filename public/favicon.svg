@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="120 104 272 288">
+<defs>
+<linearGradient id="body" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#342b22"/><stop offset="1" stop-color="#2b231c"/></linearGradient>
+<linearGradient id="brass" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#c3a14b"/><stop offset="1" stop-color="#b99339"/></linearGradient>
+<linearGradient id="hinge" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#c8a551"/><stop offset="1" stop-color="#b59037"/></linearGradient>
+<filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#17120d" flood-opacity=".16"/></filter>
+<clipPath id="bar"><rect x="137" y="229" width="238" height="32" rx="3"/></clipPath>
+<clipPath id="arm"><rect x="137" y="196" width="232" height="31" rx="3"/></clipPath>
+</defs>
+<path fill="url(#body)" filter="url(#soft-shadow)" d="M137 267 H375 V372 Q375 385 362 385 H150 Q137 385 137 372 Z"/>
+<path d="M140 267.5 H372" fill="none" stroke="#e4d8c3" stroke-opacity=".18" stroke-width="1"/>
+<rect x="137" y="229" width="238" height="32" rx="3" fill="url(#body)"/>
+<path d="M140 229.5 H372" fill="none" stroke="#e4d8c3" stroke-opacity=".17" stroke-width="1"/>
+<g clip-path="url(#bar)" fill="url(#brass)"><path d="M77.0 261 L109.0 261 L125.0 229 L93.0 229 Z"/><path d="M141.0 261 L173.0 261 L189.0 229 L157.0 229 Z"/><path d="M205.0 261 L237.0 261 L253.0 229 L221.0 229 Z"/><path d="M269.0 261 L301.0 261 L317.0 229 L285.0 229 Z"/><path d="M333.0 261 L365.0 261 L381.0 229 L349.0 229 Z"/><path d="M397.0 261 L429.0 261 L445.0 229 L413.0 229 Z"/></g>
+<g transform="rotate(-19.3 139 227)">
+<rect x="137" y="196" width="232" height="31" rx="3" fill="url(#body)"/>
+<path d="M140 196.5 H365" fill="none" stroke="#e4d8c3" stroke-opacity=".18" stroke-width="1"/>
+<g clip-path="url(#arm)" fill="url(#brass)"><path d="M103.0 227 L135.0 227 L151.0 196 L119.0 196 Z"/><path d="M167.0 227 L199.0 227 L215.0 196 L183.0 196 Z"/><path d="M231.0 227 L263.0 227 L279.0 196 L247.0 196 Z"/><path d="M295.0 227 L327.0 227 L343.0 196 L311.0 196 Z"/><path d="M359.0 227 L391.0 227 L407.0 196 L375.0 196 Z"/><path d="M423.0 227 L455.0 227 L471.0 196 L439.0 196 Z"/></g>
+</g>
+<path fill="url(#hinge)" d="M139 208 Q139 202 145 203 L160 206 Q165 207 168 211 L183 238 Q185 243 182 247 L176 256 Q173 261 167 261 L145 261 Q139 261 139 255 Z"/>
+<circle cx="149" cy="216" r="4.2" fill="#f3ead6"/><circle cx="149" cy="250" r="4.2" fill="#f3ead6"/><circle cx="172" cy="248" r="4.2" fill="#f3ead6"/>
+</svg>
